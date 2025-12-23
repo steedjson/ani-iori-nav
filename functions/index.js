@@ -94,6 +94,16 @@ export async function onRequest(context) {
           await env.NAV_DB.prepare("ALTER TABLE pending_sites ADD COLUMN catelog_name TEXT").run();
       }
 
+      try {
+          await env.NAV_DB.prepare("SELECT is_private FROM category LIMIT 1").first();
+      } catch (e) {
+          try {
+             await env.NAV_DB.prepare("ALTER TABLE category ADD COLUMN is_private INTEGER DEFAULT 0").run();
+          } catch(e2) {
+             console.error('Failed to add is_private to category', e2);
+          }
+      }
+
       indexesChecked = true;
     } catch (e) {
       console.error('Failed to ensure indexes or columns:', e);
@@ -106,7 +116,12 @@ export async function onRequest(context) {
   // 1. 获取所有分类
   let categories = [];
   try {
-    const { results } = await env.NAV_DB.prepare('SELECT * FROM category ORDER BY sort_order ASC, id ASC').all();
+    let query = 'SELECT * FROM category';
+    if (!isAuthenticated) {
+        query += ' WHERE is_private = 0';
+    }
+    query += ' ORDER BY sort_order ASC, id ASC';
+    const { results } = await env.NAV_DB.prepare(query).all();
     categories = results || [];
   } catch (e) {
     console.error('Failed to fetch categories:', e);

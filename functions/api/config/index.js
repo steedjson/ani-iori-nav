@@ -132,15 +132,22 @@ export async function onRequestPost(context) {
       
     }
     // Find the category ID from the category name
-    const categoryResult = await env.NAV_DB.prepare('SELECT catelog FROM category WHERE id = ?').bind(catelogId).first();
+    const categoryResult = await env.NAV_DB.prepare('SELECT catelog, is_private FROM category WHERE id = ?').bind(catelogId).first();
 
     if (!categoryResult) {
       return errorResponse(`Category not found.`, 400);
     }
+    
+    // If category is private, force site to be private
+    let finalIsPrivate = isPrivateValue;
+    if (categoryResult.is_private === 1) {
+        finalIsPrivate = 1;
+    }
+
     const insert = await env.NAV_DB.prepare(`
       INSERT INTO sites (name, url, logo, desc, catelog_id, catelog_name, sort_order, is_private)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(sanitizedName, sanitizedUrl, sanitizedLogo, sanitizedDesc, catelogId, categoryResult.catelog, sortOrderValue, isPrivateValue).run();
+    `).bind(sanitizedName, sanitizedUrl, sanitizedLogo, sanitizedDesc, catelogId, categoryResult.catelog, sortOrderValue, finalIsPrivate).run();
 
     return jsonResponse({
       code: 201,

@@ -3194,3 +3194,71 @@ initSettings();
 
 // Init Data
 fetchConfigs();
+
+// ==========================================
+// 私密分类与书签联动逻辑
+// ==========================================
+
+function setupBookmarkPrivacyLinkage(selectId, checkboxId) {
+    const select = document.getElementById(selectId);
+    const checkbox = document.getElementById(checkboxId);
+    
+    if (!select || !checkbox) return;
+    
+    const updatePrivacy = () => {
+        const catId = select.value;
+        const category = categoriesData.find(c => c.id == catId);
+        
+        // Find existing hint or create
+        const container = checkbox.closest('.form-group');
+        let hint = container.querySelector('.privacy-hint');
+        
+        if (category && category.is_private) {
+            checkbox.checked = true;
+            checkbox.disabled = true;
+            
+            if (!hint) {
+                hint = document.createElement('span');
+                hint.className = 'privacy-hint text-xs text-amber-600 ml-2 font-normal';
+                hint.innerText = '(所属分类私密，强制开启)';
+                const label = container.querySelector('label:first-child');
+                if (label) label.appendChild(hint);
+            }
+        } else {
+            checkbox.disabled = false;
+            if (hint) hint.remove();
+        }
+    };
+    
+    select.addEventListener('change', updatePrivacy);
+    
+    // Attach to element for external call
+    select.updatePrivacyState = updatePrivacy;
+}
+
+// 初始化监听器
+document.addEventListener('DOMContentLoaded', () => {
+   setupBookmarkPrivacyLinkage('addBookmarkCatelog', 'addBookmarkIsPrivate');
+   setupBookmarkPrivacyLinkage('editBookmarkCatelog', 'editBookmarkIsPrivate');
+});
+
+// 劫持 handleEdit 以触发检查
+const originalHandleEditFn = window.handleEdit;
+window.handleEdit = function(id) {
+    if (originalHandleEditFn) originalHandleEditFn(id);
+    setTimeout(() => {
+        const select = document.getElementById('editBookmarkCatelog');
+        if (select && select.updatePrivacyState) select.updatePrivacyState();
+    }, 100);
+};
+
+// 监听新增按钮点击
+const addBookmarkBtnRef = document.getElementById('addBookmarkBtn');
+if (addBookmarkBtnRef) {
+    addBookmarkBtnRef.addEventListener('click', () => {
+        setTimeout(() => {
+             const select = document.getElementById('addBookmarkCatelog');
+             if (select && select.updatePrivacyState) select.updatePrivacyState();
+        }, 100);
+    });
+}
