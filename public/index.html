@@ -1,184 +1,200 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="dark">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{SITE_NAME}} - 星际导航</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <title>{{SITE_NAME}} - 探索 · 导航</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml">
-  <link rel="stylesheet" href="/css/style.css?v=11">
-  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // 强制启用深色模式逻辑作为默认科技风，但也保留切换能力
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage))) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { 
-            sans: ['"Noto Sans SC"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'], // 用于代码或强调
-          },
           colors: {
-            // 深空色系 - 用于背景
-            space: {
-              950: '#0B0E14', // 极深背景
-              900: '#151923', // 次深背景
-              800: '#1E2330', // 卡片背景
-            },
-            // 科技蓝/紫 - 用于主色调
+            // 科技深空色系
             primary: {
-              50: '#f0f9ff',
-              400: '#38bdf8', // 天际蓝
-              500: '#0ea5e9',
-              600: '#0284c7', 
-              glow: 'rgba(56, 189, 248, 0.5)' // 发光色
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
+              400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
+              800: '#075985', 900: '#0c4a6e', 950: '#082f49',
             },
-            // 导航指引色 - 霓虹青/绿
+            // 用于背景和卡片的深灰/金属色
+            secondary: {
+              50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
+              400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155',
+              800: '#1e293b', 900: '#0f172a', 950: '#020617',
+            },
+            // "指引之光" - 霓虹青色
             accent: {
-              400: '#2dd4bf', // 蓝绿色
-              500: '#14b8a6',
-              glow: 'rgba(45, 212, 191, 0.5)'
+              50: '#ecfeff', 100: '#cffafe', 200: '#a5f3fc', 300: '#67e8f9',
+              400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2', 700: '#0e7490',
+              800: '#155e75', 900: '#164e63', 950: '#083344',
             },
           },
-          backgroundImage: {
-            'grid-pattern': "linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)",
-            'hero-glow': "radial-gradient(circle at 50% -20%, #38bdf815, transparent 70%)",
-          },
+          fontFamily: { sans: ['Noto Sans SC', 'sans-serif'] },
           animation: {
+            'blob': 'blob 7s infinite',
+            'float': 'float 6s ease-in-out infinite',
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'float': 'float 3s ease-in-out infinite',
           },
           keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
             float: {
               '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-5px)' },
+              '50%': { transform: 'translateY(-10px)' },
             }
           }
         }
       }
     }
   </script>
-
   <style>
-    /* 自定义科技感滚动条 */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0B0E14; 
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155; 
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569; 
-    }
-
-    /* 背景网格动画效果 */
-    .bg-tech-grid {
-      background-size: 40px 40px;
+    /* 全局样式覆盖 */
+    body {
+      background-color: #020617; /* 极深蓝黑 */
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        radial-gradient(at 0% 0%, rgba(8, 145, 178, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%);
+      background-attachment: fixed;
     }
 
-    /* 毛玻璃卡片基础类 */
-    .glass-panel {
-      background: rgba(30, 35, 48, 0.7);
+    /* 玻璃拟态卡片 */
+    .glass-card {
+      background: rgba(30, 41, 59, 0.4); /* 深色半透明 */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
     
-    /* 文字渐变 */
-    .text-gradient {
-      background: linear-gradient(135deg, #38bdf8 0%, #2dd4bf 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .glass-card:hover {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(34, 211, 238, 0.5); /* 悬停时青色边框 */
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.2); /* 霓虹发光 */
+      transform: translateY(-2px);
+    }
+
+    /* 侧边栏玻璃 */
+    .sidebar-glass {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* 滚动条美化 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0ea5e9;
+    }
+
+    /* 动态背景网格 */
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
     }
   </style>
 </head>
-
-<body class="bg-space-950 text-gray-300 font-sans antialiased min-h-screen selection:bg-primary-500 selection:text-white relative overflow-x-hidden">
-
-  <div class="fixed inset-0 z-0 pointer-events-none">
-    <div class="absolute inset-0 bg-hero-glow"></div>
-    <div class="absolute inset-0 bg-tech-grid opacity-60"></div>
-  </div>
+<body class="text-gray-300 antialiased overflow-x-hidden relative min-h-screen">
+  
+  <div class="fixed inset-0 z-[-1] bg-grid pointer-events-none"></div>
+  <div class="fixed top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+  <div class="fixed top-0 -right-4 w-72 h-72 bg-accent-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
 
   <input type="checkbox" id="sidebar-toggle" class="hidden">
   
-  <div class="relative z-50">
-    {{LEFT_TOP_ACTION}}
+  <div class="fixed top-4 left-4 z-[60]">
+     {{LEFT_TOP_ACTION}}
   </div>
 
-  <div class="relative z-50">
-    {{RIGHT_TOP_ACTION}}
+  <div class="fixed top-4 right-4 z-[60]">
+     {{RIGHT_TOP_ACTION}}
   </div>
   
-  <div id="mobileOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 mobile-overlay lg:hidden hidden"></div>
+  <div id="mobileOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden hidden transition-opacity"></div>
   
   <div class="fixed top-4 left-4 z-50 hidden lg:block {{SIDEBAR_TOGGLE_CLASS}}">
-    <label for="sidebar-toggle" class="p-2.5 rounded-xl glass-panel text-gray-400 hover:text-primary-400 hover:border-primary-500/30 transition-all cursor-pointer group">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <label for="sidebar-toggle" class="p-2.5 rounded-xl bg-slate-800/80 text-accent-400 hover:bg-accent-500 hover:text-white backdrop-blur-md border border-slate-700/50 shadow-lg cursor-pointer transition-all duration-300 group">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </label>
   </div>
   
-  <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 glass-panel border-r-0 border-r-white/5 z-50 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 {{SIDEBAR_CLASS}}">
-    <div class="p-6 relative">
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
-
-      <div class="flex items-center justify-between mb-8">
-        <a href="https://slink.661388.xyz/iori-nav" target="_blank" class="flex items-center space-x-2 text-primary-400 hover:text-primary-300 transition-colors group">
-          <div class="p-2 rounded-lg bg-primary-500/10 group-hover:bg-primary-500/20 ring-1 ring-primary-500/20 transition-all">
-             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+  <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 sidebar-glass z-50 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 {{SIDEBAR_CLASS}} shadow-2xl">
+    <div class="p-6 flex flex-col h-full">
+      <div class="flex items-center justify-between mb-10 px-2">
+        <a href="/" class="flex items-center space-x-3 group">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-400 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-accent-500/30 group-hover:shadow-accent-500/50 transition-all">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+             </svg>
           </div>
-          <span class="font-mono text-sm tracking-wider font-bold">GITHUB</span>
+          <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">导航</span>
         </a>
         
-        <button id="closeSidebar" class="p-1 rounded-full hover:bg-white/10 text-gray-400 lg:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button id="closeSidebar" class="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white lg:hidden transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
       
-      <div>
-        <h3 class="text-xs font-mono font-bold text-primary-500 uppercase tracking-[0.2em] mb-4 pl-1 border-l-2 border-primary-500/50">导航扇区</h3>
-        <div class="space-y-1">
-          <a href="?catalog=all" class="flex items-center px-3 py-2.5 rounded-lg {{CATALOG_EXISTS}} w-full text-gray-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      <div class="flex-1">
+        <h3 class="text-xs font-semibold text-accent-400 uppercase tracking-[0.2em] mb-4 px-3 opacity-80">探索宇宙</h3>
+        <div class="space-y-1.5">
+          <a href="?catalog=all" class="flex items-center px-4 py-3 rounded-xl text-sm font-medium {{CATALOG_EXISTS}} w-full hover:bg-white/5 text-gray-400 hover:text-white transition-all duration-200 border border-transparent hover:border-white/5 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 text-slate-500 group-hover:text-accent-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
-            <span class="text-sm">全部站点</span>
+            <span class="">全部站点</span>
           </a>
-          <div class="catalog-links-wrapper space-y-1">
+          <div class="nav-links-container space-y-1">
             {{CATALOG_LINKS}}
           </div>
         </div>
       </div>
       
-      <div class="mt-8 pt-6 border-t border-white/5">
-        <div class="{{SUBMISSION_CLASS}}">
-          <button id="addSiteBtnSidebar" class="group w-full flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 text-white text-sm font-medium rounded-lg hover:shadow-[0_0_15px_rgba(45,212,191,0.3)] transition-all duration-300 mb-4 relative overflow-hidden">
-            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+      <div class="mt-auto pt-6 border-t border-white/10">
+        <div class="{{SUBMISSION_CLASS}} mb-3">
+          <button id="addSiteBtnSidebar" class="w-full flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-accent-600 to-blue-600 hover:from-accent-500 hover:to-blue-500 text-white text-sm font-medium rounded-xl shadow-lg shadow-blue-900/50 transition-all duration-300 hover:-translate-y-0.5">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span class="relative">新建书签坐标</span>
+            新坐标
           </button>
         </div>
         
-        <a href="/admin" target="_blank" class="mt-2 flex items-center justify-center px-4 py-2 text-sm text-gray-500 hover:text-primary-400 transition duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        <a href="/admin" target="_blank" class="flex items-center justify-center px-4 py-2 text-xs font-medium text-slate-500 hover:text-accent-400 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
           控制台
         </a>
@@ -186,114 +202,108 @@
     </div>
   </aside>
   
-  <main class="main-content {{MAIN_CLASS}} min-h-screen transition-all duration-300 relative z-10">
+  <main class="main-content {{MAIN_CLASS}} min-h-screen transition-all duration-300 relative">
     
-    <header class="{{HEADER_CLASS}} pt-16 pb-8 px-6 md:px-10 relative">
-      <div class="max-w-7xl mx-auto">
-        <div class="glass-panel rounded-2xl p-6 md:p-8 relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl group-hover:bg-primary-500/30 transition-all duration-700"></div>
-            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-accent-500/20 rounded-full blur-3xl group-hover:bg-accent-500/30 transition-all duration-700"></div>
-            
-            <div class="relative z-10">
-               {{HEADER_CONTENT}}
-               </div>
-         </div>
-      </div>
+    <header class="{{HEADER_CLASS}} relative pt-20 pb-16 px-6 md:px-10 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-blue-900/20 to-transparent pointer-events-none z-0"></div>
+        <div class="relative z-10 text-center md:text-left max-w-7xl mx-auto">
+            {{HEADER_CONTENT}}
+            </div>
     </header>
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 {{STATS_ROW_PY_CLASS}}">
-      <div class="flex flex-col md:flex-row items-start md:items-end justify-between {{STATS_ROW_MB_CLASS}} {{STATS_ROW_HIDDEN}} border-b border-white/5 pb-4">
-        <h2 class="text-2xl font-bold text-white flex items-center {{STATS_VISIBLE}}" {{STATS_STYLE}} data-role="list-heading" data-default="{{HEADING_DEFAULT}}" data-active="{{HEADING_ACTIVE}}">
-           <span class="w-1.5 h-6 bg-accent-500 rounded-full mr-3 shadow-[0_0_10px_#14b8a6]"></span>
-           {{HEADING_TEXT}}
+    <div class="max-w-[85rem] mx-auto px-4 sm:px-6 -mt-8 relative z-20 {{STATS_ROW_PY_CLASS}}">
+      <div class="flex flex-col md:flex-row items-center justify-between {{STATS_ROW_MB_CLASS}} {{STATS_ROW_HIDDEN}} p-1">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-3 {{STATS_VISIBLE}}" {{STATS_STYLE}} data-role="list-heading" data-default="{{HEADING_DEFAULT}}" data-active="{{HEADING_ACTIVE}}">
+          <span class="w-1.5 h-8 bg-accent-500 rounded-full inline-block shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
+          {{HEADING_TEXT}}
         </h2>
-        
-        <div class="text-sm font-mono text-gray-400 mt-2 md:mt-0 {{HITOKOTO_CLASS}} md:block {{HITOKOTO_VISIBLE}}" {{HITOKOTO_STYLE}}>
+        <div class="text-sm text-slate-400 mt-4 md:mt-0 px-4 py-2 rounded-full bg-slate-800/50 border border-white/5 backdrop-blur-sm {{HITOKOTO_CLASS}} {{HITOKOTO_VISIBLE}}" {{HITOKOTO_STYLE}}>
           <div id="hitokoto" class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></span>
-            <a href="#" target="_blank" id="hitokoto_text" class="hover:text-accent-400 transition-colors" {{HITOKOTO_STYLE}}>{{HITOKOTO_CONTENT}}</a>
+             <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse mr-2"></span>
+             <a href="#" target="_blank" id="hitokoto_text" class="hover:text-accent-300 transition-colors" {{HITOKOTO_STYLE}}>{{HITOKOTO_CONTENT}}</a>
           </div>
         </div>
       </div>
     </div>
     
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 mt-6">
+    <section class="max-w-[85rem] mx-auto px-4 sm:px-6 pb-20 mt-6">
       <div class="{{CONTAINER_CLASS}}">
         <div id="sitesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {{SITES_GRID}}
-          </div>
+            {{SITES_GRID}}
+        </div>
       </div>
     </section>
     
-    <footer class="{{FOOTER_CLASS}} py-8 border-t border-white/5 mt-auto bg-space-950/50 backdrop-blur-sm">
-      <div class="max-w-5xl mx-auto text-center">
-        <div class="flex justify-center items-center space-x-4 text-sm text-gray-500">
-          <a href="https://slink.661388.xyz/iori-nav" target="_blank" class="flex items-center hover:text-primary-400 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-            <span>Core System</span>
+    <footer class="{{FOOTER_CLASS}} border-t border-white/5 mt-10 backdrop-blur-sm bg-black/20">
+      <div class="max-w-5xl mx-auto text-center py-8">
+        <div class="flex justify-center items-center space-x-6 text-sm text-slate-500">
+          <a href="https://github.com/52ny/nav" target="_blank" class="flex items-center hover:text-accent-400 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+            <span>GitHub</span>
           </a>
-          <span class="text-gray-700">/</span>
+          <span class="text-slate-700">|</span>
           <p>© {{CURRENT_YEAR}} {{FOOTER_TEXT}}</p>
         </div>
       </div>
     </footer>
   </main>
   
-  <button id="backToTop" class="fixed bottom-8 right-8 p-3 rounded-xl bg-primary-600/90 text-white shadow-lg shadow-primary-500/30 opacity-0 invisible transition-all duration-300 hover:bg-primary-500 hover:-translate-y-1 z-50">
+  <button id="backToTop" class="fixed bottom-8 right-8 p-3.5 rounded-2xl bg-accent-500 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] opacity-0 invisible transition-all duration-300 hover:bg-accent-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] z-50">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
   </button>
   
-  <div id="addSiteModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
-    <div class="bg-space-800 border border-white/10 rounded-2xl shadow-2xl w-full max-w-md mx-4 transform translate-y-8 transition-all duration-300 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500"></div>
-      
+  <div id="addSiteModal" class="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-md mx-4 transform translate-y-8 transition-all duration-300 ring-1 ring-white/10">
       <div class="p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-xl font-bold text-white tracking-wide">添加新节点</h2>
-          <button id="closeModal" class="text-gray-400 hover:text-white transition-colors">
+          <h2 class="text-xl font-bold text-white flex items-center">
+             <span class="w-1 h-5 bg-accent-500 rounded-full mr-3"></span>
+             添加新坐标
+          </h2>
+          <button id="closeModal" class="text-slate-400 hover:text-white transition-colors">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
         
-        <form id="addSiteForm" class="space-y-4">
+        <form id="addSiteForm" class="space-y-5">
           <div>
-            <label for="addSiteName" class="block text-xs font-mono text-primary-400 mb-1">名称 / ID</label>
-            <input type="text" id="addSiteName" required class="block w-full px-4 py-2.5 bg-space-950/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all placeholder-gray-600">
+            <label for="addSiteName" class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">名称</label>
+            <input type="text" id="addSiteName" required class="block w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition-all">
           </div>
           
           <div>
-            <label for="addSiteUrl" class="block text-xs font-mono text-primary-400 mb-1">目标 URL</label>
-            <input type="text" id="addSiteUrl" required class="block w-full px-4 py-2.5 bg-space-950/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all placeholder-gray-600">
+            <label for="addSiteUrl" class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">网址</label>
+            <input type="text" id="addSiteUrl" required class="block w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition-all">
           </div>
           
           <div class="grid grid-cols-2 gap-4">
              <div>
-                <label for="addSiteLogo" class="block text-xs font-mono text-primary-400 mb-1">Logo URL</label>
-                <input type="text" id="addSiteLogo" class="block w-full px-4 py-2.5 bg-space-950/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all">
+                <label for="addSiteLogo" class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Logo URL</label>
+                <input type="text" id="addSiteLogo" class="block w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition-all">
              </div>
              <div>
-                <label for="addSiteCatelog" class="block text-xs font-mono text-primary-400 mb-1">分类扇区</label>
-                <select id="addSiteCatelog" required class="block w-full px-4 py-2.5 bg-space-950/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all appearance-none">
-                  <option value="" disabled selected>扫描中...</option>
+                <label for="addSiteCatelog" class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">分类</label>
+                <select id="addSiteCatelog" required class="block w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition-all appearance-none">
+                  <option value="" disabled selected>选择象限...</option>
                 </select>
              </div>
           </div>
           
           <div>
-            <label for="addSiteDesc" class="block text-xs font-mono text-primary-400 mb-1">描述 / 备注</label>
-            <textarea id="addSiteDesc" rows="2" class="block w-full px-4 py-2.5 bg-space-950/50 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all placeholder-gray-600"></textarea>
+            <label for="addSiteDesc" class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">描述 (可选)</label>
+            <textarea id="addSiteDesc" rows="2" class="block w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-500/50 focus:border-accent-500 transition-all"></textarea>
           </div>
           
-          <div class="flex justify-end pt-4 space-x-3">
-            <button type="button" id="cancelAddSite" class="px-4 py-2 rounded-lg border border-white/10 text-gray-300 hover:bg-white/5 transition-colors text-sm">
+          <div class="flex justify-end pt-4 gap-3">
+            <button type="button" id="cancelAddSite" class="px-5 py-2.5 rounded-xl border border-slate-600 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
               取消
             </button>
-            <button type="submit" class="px-6 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white shadow-lg shadow-primary-500/20 text-sm font-medium transition-all">
-              确认接入
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-500 text-white text-sm font-medium shadow-[0_0_15px_rgba(8,145,178,0.4)] hover:shadow-[0_0_20px_rgba(8,145,178,0.6)] transition-all transform active:scale-95">
+              确认提交
             </button>
           </div>
         </form>
@@ -301,56 +311,33 @@
     </div>
   </div>
   
-  <style>
-    /* 强行美化 Grid 内的卡片 (假设它们没有特别的类名，或者有基础类名) */
-    /* 我们利用 #sitesGrid 直接子元素选择器 */
-    #sitesGrid > div {
-        background-color: rgba(30, 35, 48, 0.4) !important; /* 半透明深色 */
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 0.75rem !important; /* rounded-xl */
-        transition: all 0.3s ease !important;
-        box-shadow: none !important;
-        color: #e2e8f0 !important; /* text-gray-200 */
-        overflow: hidden;
-        position: relative;
-    }
-
-    #sitesGrid > div:hover {
-        transform: translateY(-5px);
-        border-color: rgba(56, 189, 248, 0.3) !important; /* primary color border */
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.1) !important; /* glow effect */
-        background-color: rgba(30, 35, 48, 0.7) !important;
-    }
-    
-    /* 处理卡片内的文字颜色 */
-    #sitesGrid > div h3, 
-    #sitesGrid > div .site-name {
-        color: #f8fafc !important; /* white */
-        font-weight: 600 !important;
-    }
-    
-    #sitesGrid > div p, 
-    #sitesGrid > div .site-desc {
-        color: #94a3b8 !important; /* gray-400 */
-    }
-
-    /* 处理左侧分类导航链接的样式覆盖 */
-    .sidebar a {
-        transition: all 0.2s;
-    }
-    .sidebar a:hover {
-        background-color: rgba(255,255,255,0.05);
-        color: #fff;
-    }
-    /* 选中状态 (通常会有 active 类) */
-    .sidebar a.active {
-        background: linear-gradient(90deg, rgba(56, 189, 248, 0.1), transparent);
-        color: #38bdf8 !important; /* primary-400 */
-        border-left: 2px solid #38bdf8;
-    }
-  </style>
-
   <script src="/js/main.js?v=13"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.getElementById('sitesGrid');
+        if(grid) {
+            // 使用 MutationObserver 监听 JS 动态插入的卡片
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) { // 元素节点
+                             // 强制添加 glass-card 类，并移除可能冲突的 bg-white
+                             node.classList.add('glass-card', 'rounded-xl', 'transition-all', 'duration-300', 'p-4', 'group');
+                             node.classList.remove('bg-white', 'shadow-md', 'hover:shadow-lg');
+                             
+                             // 尝试优化内部文字颜色
+                             const title = node.querySelector('strong, h4, .title'); // 假设标题有这些标签
+                             if(title) title.classList.add('text-white', 'group-hover:text-accent-300');
+                             
+                             const desc = node.querySelector('p, .desc');
+                             if(desc) desc.classList.add('text-slate-400');
+                        }
+                    });
+                });
+            });
+            observer.observe(grid, { childList: true, subtree: true });
+        }
+    });
+  </script>
 </body>
 </html>
